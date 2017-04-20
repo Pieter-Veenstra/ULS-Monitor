@@ -1,0 +1,20 @@
+﻿<Settings>
+    <Monitor Site="http://devsp.mydev.local/ULSMonitor">
+        <Lists>
+            <List Name="ULS" Url="ULS" />
+            <List Name="Actions" Url="Actions" />
+        </Lists>
+        <Jobs>
+            <Job Name="UpdateULSList" ExpireAfter="2" Frequency="5" >
+                <Alerts>
+                    <Alert Type="email" >
+                        <Address From="NoReply@mydev.local" To="Test@mydev.local" />                 
+                    </Alert>
+                </Alerts>
+            </Job>
+        </Jobs>
+    </Monitor>
+    <SMTP Server="devsp.mydev.local">
+    </SMTP>
+</Settings>
+
