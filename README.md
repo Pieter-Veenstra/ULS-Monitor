@@ -1,6 +1,6 @@
+![ULS Monitor](https://pietersveenstra.files.wordpress.com/2015/06/ulsmonitor.png)
 # ULS-Monitor
 This projects contains a solution to monitor your ULS SharePoint logs. This solution is PowerShell script only. 
-![ULS Monitor](https://pietersveenstra.files.wordpress.com/2015/06/ulsmonitor.png)
 
 # Product Features
 * Receive emails for each critical, warning, unexpected or monitorable message
