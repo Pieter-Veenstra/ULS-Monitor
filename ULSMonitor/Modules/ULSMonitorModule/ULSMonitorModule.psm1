@@ -463,7 +463,7 @@ Function Edit-CleanULSList
     #>
 
     param(
-           [Parameter(Mandatory=$true)][System.DateTime]$expiryDate,
+           [Parameter(Mandatory=$true)][String]$expiry,
            [Parameter(Mandatory=$true)][Microsoft.SharePoint.SPList]$ulsList
          )
 
@@ -479,25 +479,32 @@ Function Edit-CleanULSList
                         "<Where> 
                             <Leq> 
                                 <FieldRef Name='ULSDateTime' /> 
-                                <Value Type='DateTime'>"+ $expiryDate.ToString("yyyy-MM-dd:hh:mm:ss") + "</Value> 
+                                <Today OffsetDays='-" + $expiry + "' />                                
                            </Leq> 
                         </Where>" 
                 $spqQuery.ViewFields = "<FieldRef Name='ID' /><FieldRef Name='ULSDateTime' />" 
                 $spqQuery.ViewFieldsOnly = $true 
                 $splListItems = $ulsList.GetItems($spqQuery)
 
-                if ($splListItems.Count -eq 0)
+                try
                 {
-                    Write-Debug "No items to clean up"
+                    if ($splListItems.Count -eq 0 -or $splListItems -eq $null)
+                    {
+                        Write-Debug "No items to clean up"
+                    }
+                    else
+                    {
+                       foreach ($splListItem in $splListItems)
+                       {           
+                          "about to expire message" + $splListItem["ID"] + ": " + $splListItem["ULSDateTime"] | Write-Debug 
+                          $id = $splListItem["ID"]
+                         $ulsList.getitembyid($id).Delete()
+                       }
+                    }
                 }
-                else
+                catch
                 {
-                   foreach ($splListItem in $splListItems)
-                   {           
-                      "about to expire message" + $splListItem["ID"] + ": " + $splListItem["ULSDateTime"] | Write-Debug 
-                      $id = $splListItem["ID"]
-                     $ulsList.getitembyid($id).Delete()
-                   }
+                   Write-Debug $_.Exception.Message
                 }
     }
 
